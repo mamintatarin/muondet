@@ -147,8 +147,8 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
         
 
   
-        G4double world_sizeXY = 30*cm;
-        G4double world_sizeZ  = 30*cm;
+        G4double world_sizeXY = 250*cm;
+        G4double world_sizeZ  = 250*cm;
         G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
         G4Material* det_mat = nist->FindOrBuildMaterial("G4_AIR");
         G4MaterialPropertiesTable* GalacticSC = new G4MaterialPropertiesTable();
@@ -332,9 +332,9 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 
 
 
-        G4OpticalSurfaceFinish finishSide=groundfrontpainted;
-        G4OpticalSurfaceModel modelSide=unified;
-        G4SurfaceType typeSide=dielectric_dielectric;
+        G4OpticalSurfaceFinish finishSide=polishedteflonair;
+        G4OpticalSurfaceModel modelSide=LUT;
+        G4SurfaceType typeSide=dielectric_LUT;
                 
 
         Logger::instance()->print(("Surface type (side): "+std::to_string(typeSide)).c_str());

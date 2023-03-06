@@ -13,14 +13,15 @@ class B4DetectorConstruction;
 class OpNoviceActionInitialization : public G4VUserActionInitialization
 {
   public:
-    OpNoviceActionInitialization(CLHEP::Hep3Vector pos);
+    OpNoviceActionInitialization(CLHEP::Hep3Vector pos,G4double tempwidth,G4double tempheight);
     virtual ~OpNoviceActionInitialization();
 
     virtual void BuildForMaster() const;
     virtual void Build() const;
 public:
     CLHEP::Hep3Vector position;
-
+    G4double width;
+    G4double height;
 };
 
 #endif

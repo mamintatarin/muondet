@@ -102,8 +102,8 @@ int main(int argc,char** argv)
      else if ( G4String(argv[i]) == "-r" ) myseed  = atoi(argv[i+1]);
      else if ( G4String(argv[i]) == "-x" ) x  = atof(argv[i+1]);
      else if ( G4String(argv[i]) == "-z" ) z  = atof(argv[i+1]);
-     else if ( G4String(argv[i]) == "-width" ) width  = atof(argv[i+1]);
-     else if ( G4String(argv[i]) == "-height" ) height  = atof(argv[i+1]);
+     else if ( G4String(argv[i]) == "-width" ) width  = atof(argv[i+1])*cm;
+     else if ( G4String(argv[i]) == "-height" ) height  = atof(argv[i+1])*cm;
 
     else {
       PrintUsage();
@@ -149,7 +149,7 @@ int main(int argc,char** argv)
   runManager-> SetUserInitialization(physicsList);
 
   // User action initialization
-  OpNoviceActionInitialization* act_init = new OpNoviceActionInitialization(G4ThreeVector(x*mm,y*mm,z*mm));
+  OpNoviceActionInitialization* act_init = new OpNoviceActionInitialization(G4ThreeVector(x*mm,y*mm,z*mm),width,height);
  
   runManager->SetUserInitialization(act_init);
 

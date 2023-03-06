@@ -4,5 +4,5 @@
 /run/initialize
 #
 /vis/disable
-/run/beamOn 50000
+/run/beamOn 5000
 

@@ -54,6 +54,7 @@ OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector
   G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+  
   G4double energy=5;
   string particle_type="mu+";
   G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
@@ -62,7 +63,7 @@ OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector
   fParticleGun->SetParticlePosition(position);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
   fParticleGun->SetParticleEnergy(energy*GeV);
-
+  
   /*
   G4double energy=122;
   string particle_type="gamma";
@@ -73,22 +74,22 @@ OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
   fParticleGun->SetParticleEnergy(energy*keV);
   */
-/*
+  /*
   G4double energy=2.4;
   string particle_type="opticalphoton";
   G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleTime(0.0*ns);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.0,0.0,-3*cm));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.4,0.4,-0.8));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.2,0.4,-0.4));
   fParticleGun->SetParticleEnergy(energy*eV);
   fParticleGun->SetParticlePolarization(G4ThreeVector(1.0,1.0,0.0));
-  */       
+      */   
 
 
 
   Logger::instance()->print(("Primary particle type: "+particle_type).c_str());
-  Logger::instance()->print(("Primary particle energy: "+std::to_string(energy)+" keV").c_str());
+  Logger::instance()->print(("Primary particle energy: "+std::to_string(energy)+" GeV").c_str());
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
