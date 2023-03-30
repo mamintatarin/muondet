@@ -55,7 +55,7 @@ OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector
   fParticleGun = new G4ParticleGun(n_particle);
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   
-  G4double energy=5;
+  G4double energy=1;
   string particle_type="mu+";
   G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
   fParticleGun->SetParticleDefinition(particle);

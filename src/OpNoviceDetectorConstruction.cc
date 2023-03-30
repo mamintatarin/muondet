@@ -332,9 +332,9 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 
 
 
-        G4OpticalSurfaceFinish finishSide=polishedteflonair;
-        G4OpticalSurfaceModel modelSide=LUT;
-        G4SurfaceType typeSide=dielectric_LUT;
+        G4OpticalSurfaceFinish finishSide=polishedfrontpainted;
+        G4OpticalSurfaceModel modelSide=unified;
+        G4SurfaceType typeSide=dielectric_dielectric;
                 
 
         Logger::instance()->print(("Surface type (side): "+std::to_string(typeSide)).c_str());
