@@ -42,19 +42,7 @@ target_link_libraries(OpNovice ${Geant4_LIBRARIES} )
 # build OpNovice. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(OpNovice_SCRIPTS
-    optPhoton.mac
-    gui.mac
-    vis.mac
-  )
 
-foreach(_script ${OpNovice_SCRIPTS})
-  configure_file(
-    ${PROJECT_SOURCE_DIR}/${_script}
-    ${PROJECT_BINARY_DIR}/${_script}
-    COPYONLY
-    )
-endforeach()
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX

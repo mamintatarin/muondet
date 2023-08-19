@@ -37,10 +37,9 @@
 #include <G4SystemOfUnits.hh>
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNoviceActionInitialization::OpNoviceActionInitialization(CLHEP::Hep3Vector pos,G4double tempwidth, G4double tempheight)
+OpNoviceActionInitialization::OpNoviceActionInitialization(G4double tempwidth, G4double tempheight)
  : G4VUserActionInitialization()
 {
-    position=pos;
     width=tempwidth;
     height = tempheight;
 }
@@ -62,11 +61,10 @@ void OpNoviceActionInitialization::BuildForMaster() const
 void OpNoviceActionInitialization::Build() const
 {
   OpNoviceSteppingAction* tempStepping =  new OpNoviceSteppingAction();
-  OpNoviceEventAction* tempEvent = new OpNoviceEventAction(position,tempStepping,width,height);
+  OpNoviceEventAction* tempEvent = new OpNoviceEventAction(tempStepping,width,height);
   OpNoviceRunAction * tempRun = new OpNoviceRunAction();
-  Logger::instance()->print(std::to_string(position.getX()*mm)+ " " + std::to_string(position.getY()*mm)+" " + std::to_string(position.getZ()*mm) + " mm");
 
-  SetUserAction(new OpNovicePrimaryGeneratorAction(position));
+  SetUserAction(new OpNovicePrimaryGeneratorAction());
   SetUserAction(tempRun);
   SetUserAction(tempEvent);
   SetUserAction(tempStepping);

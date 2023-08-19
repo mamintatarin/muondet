@@ -12,6 +12,7 @@
 #
 # Use this open statement to create an OpenGL view:
 /vis/open OGL 600x600-0+0
+
 #
 # Use this open statement to create a .prim file suitable for
 # viewing in DAWN:
@@ -43,7 +44,7 @@
 #/vis/viewer/set/style wireframe
 #
 # Draw coordinate axes:
-#/vis/scene/add/axes 0 0 0 1 m
+/vis/scene/add/axes 0 0 0 1 cm
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:

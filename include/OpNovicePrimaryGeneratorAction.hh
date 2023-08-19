@@ -4,6 +4,7 @@
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
 #include <CLHEP/Vector/ThreeVector.h>
+#include <G4GeneralParticleSource.hh>
 
 class G4ParticleGun;
 class G4Event;
@@ -14,7 +15,7 @@ class OpNovicePrimaryGeneratorMessenger;
 class OpNovicePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
-    OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector pos);
+    OpNovicePrimaryGeneratorAction();
     virtual ~OpNovicePrimaryGeneratorAction();
 
   public:
@@ -22,8 +23,7 @@ class OpNovicePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
 
   private:
-    G4ParticleGun* fParticleGun;
-    CLHEP::Hep3Vector position;
+    G4GeneralParticleSource* fParticleSource;
     
 };
 

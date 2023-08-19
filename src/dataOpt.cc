@@ -9,9 +9,9 @@ using namespace CLHEP;
 
 
 
-void FillParticleDataOpt(SensitiveDetectorParticleDataOpt &data, G4double z, G4double width, G4double height,
+void FillParticleDataOpt(SensitiveDetectorParticleDataOpt &data,  G4double width, G4double height,
                          G4double energy1,G4double energy2) {
-    data.z=z;
+
     data.width = width;
     data.height=height;
     data.energy1 = energy1;

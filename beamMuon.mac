@@ -1,0 +1,10 @@
+/control/verbose 0
+/tracking/verbose 0
+/event/verbose 0
+/run/initialize
+/gps/verbose 0
+/gps/particle mu+
+/gps/ene/mono 1 GeV
+/gps/direction 0 -1 0
+/gps/position 0 10 0 cm
+/run/beamOn 100

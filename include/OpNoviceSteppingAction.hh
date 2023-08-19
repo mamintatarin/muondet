@@ -20,7 +20,7 @@ public:
     OpNoviceSteppingAction();
     virtual ~OpNoviceSteppingAction();
     void UserSteppingAction(const G4Step *step) override;
-    G4double results[4];
+    G4double results[2];
 private:
     
 

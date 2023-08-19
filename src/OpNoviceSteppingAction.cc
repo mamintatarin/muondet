@@ -55,36 +55,38 @@ OpNoviceSteppingAction::~OpNoviceSteppingAction(){}
 void OpNoviceSteppingAction::UserSteppingAction(const G4Step* step)
 {
   auto track = step->GetTrack();
-  
-    if (track->GetVolume()->GetName()=="Detector1" && track->GetDefinition()== G4OpticalPhoton::Definition())
+  //track->GetVolume()->GetName()=="Detector1" &&
+    if (track->GetDefinition()== G4OpticalPhoton::Definition() && step->GetPostStepPoint()->GetStepStatus()==fGeomBoundary
+                && step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="Detector1")
     {
+            //Logger::instance()->print("\nflag\n");
 
+            results[0] += step->GetTotalEnergyDeposit()/keV;
 
-            results[0] += track->GetKineticEnergy()/keV;
-
-        track->SetTrackStatus(fStopAndKill);
+        //track->SetTrackStatus(fStopAndKill);
 
     }
-    if (track->GetVolume()->GetName()=="Detector2" && track->GetDefinition()== G4OpticalPhoton::Definition()){
+    if (track->GetDefinition()== G4OpticalPhoton::Definition() && step->GetPostStepPoint()->GetStepStatus()==fGeomBoundary
+            && step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="Detector2"){
+          
 
+            results[1] += step->GetTotalEnergyDeposit()/keV;
 
-            results[1] += track->GetKineticEnergy()/keV;
-
-        track->SetTrackStatus(fStopAndKill);
+        //track->SetTrackStatus(fStopAndKill);
     }
 
-    if (track->GetDefinition()!= G4OpticalPhoton::Definition()
-                                                      &&
-                                                      track->GetVolume()->GetName()!="Scintillator" ){
+    //if (track->GetDefinition()!= G4OpticalPhoton::Definition()
+    //                                                  &&
+     //                                                 track->GetVolume()->GetName()!="Scintillator" ){
 
 
+       // track->SetTrackStatus(fStopAndKill);
+    //}
+    if (track->GetDefinition()== G4OpticalPhoton::Definition() &&track->GetVolume()->GetName()=="World" ){
         track->SetTrackStatus(fStopAndKill);
     }
-    if (track->GetDefinition()== G4OpticalPhoton::Definition()
-                                                      &&
-                                                      track->GetVolume()->GetName()=="World" ){
-
-
+    if (track->GetDefinition()== G4OpticalPhoton::Definition() &&step->GetPostStepPoint()->GetStepStatus()==fGeomBoundary
+                && step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
         track->SetTrackStatus(fStopAndKill);
     }
    

@@ -82,15 +82,10 @@ int main(int argc,char** argv)
     std::cout << "argc " << argc << " value" << std::endl;
   // Evaluate arguments
   //
-  if ( argc > 20 ) {  //9
-    PrintUsage();
-    return 1;
-  }
+ 
 
   G4String macro;
   G4String session;
-  G4double x=0;
-  G4double z=0;
   G4double width = 5*cm;
   G4double height = 10*cm;
 
@@ -100,8 +95,6 @@ int main(int argc,char** argv)
      if      ( G4String(argv[i]) == "-m" ) macro   = argv[i+1];
      else if ( G4String(argv[i]) == "-u" ) session = argv[i+1];
      else if ( G4String(argv[i]) == "-r" ) myseed  = atoi(argv[i+1]);
-     else if ( G4String(argv[i]) == "-x" ) x  = atof(argv[i+1]);
-     else if ( G4String(argv[i]) == "-z" ) z  = atof(argv[i+1]);
      else if ( G4String(argv[i]) == "-width" ) width  = atof(argv[i+1])*cm;
      else if ( G4String(argv[i]) == "-height" ) height  = atof(argv[i+1])*cm;
 
@@ -110,7 +103,7 @@ int main(int argc,char** argv)
       return 1;
     }
   }
-    G4double y = width/2;
+   
     Logger::instance()->print(("Width: "+std::to_string(width)).c_str());
     Logger::instance()->print(("Height: "+std::to_string(height)).c_str());
   // Instantiate G4UIExecutive if interactive mode
@@ -149,7 +142,7 @@ int main(int argc,char** argv)
   runManager-> SetUserInitialization(physicsList);
 
   // User action initialization
-  OpNoviceActionInitialization* act_init = new OpNoviceActionInitialization(G4ThreeVector(x*mm,y*mm,z*mm),width,height);
+  OpNoviceActionInitialization* act_init = new OpNoviceActionInitialization(width,height);
  
   runManager->SetUserInitialization(act_init);
 
@@ -169,9 +162,9 @@ int main(int argc,char** argv)
   }
   else // Define UI session for interactive mode
   {
-     UImanager->ApplyCommand("/control/execute vis.mac");
+     UImanager->ApplyCommand("/control/execute ../vis.mac");
      if (ui->IsGUI())
-        UImanager->ApplyCommand("/control/execute gui.mac");
+        UImanager->ApplyCommand("/control/execute ../gui.mac");
      ui->SessionStart();
      delete ui;
   }

@@ -5,12 +5,11 @@
 #include "dataOpt.hh"
 #include <G4SystemOfUnits.hh>
 
-OpNoviceEventAction::OpNoviceEventAction(CLHEP::Hep3Vector pos,OpNoviceSteppingAction* stepact, G4double tempwidth, G4double tempheight)
+OpNoviceEventAction::OpNoviceEventAction(OpNoviceSteppingAction* stepact, G4double tempwidth, G4double tempheight)
         : G4UserEventAction()
 {
     std::string filename = "Muons";
     foutMuons= DataFileManager::instance()->getDataFile<SensitiveDetectorParticleDataOpt>(filename);
-    position = pos;
     tempStepping = stepact;
     width = tempwidth;
     height = tempheight;
@@ -25,7 +24,7 @@ void OpNoviceEventAction::EndOfEventAction(const G4Event* Event)
 {
 
 
-    FillParticleDataOpt(data,position.getZ(),width,height,
+    FillParticleDataOpt(data,width,height,
                         tempStepping->results[0],tempStepping->results[1]);
 
     foutMuons->addData(data);

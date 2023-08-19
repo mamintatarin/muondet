@@ -44,59 +44,18 @@
 #include <G4RandomDirection.hh>
 
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(CLHEP::Hep3Vector pos)
- : G4VUserPrimaryGeneratorAction(), 
-   fParticleGun(0)
+
+OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction(): G4VUserPrimaryGeneratorAction(), fParticleSource()
 {
-  position=pos;
-  G4int n_particle = 1;
-  fParticleGun = new G4ParticleGun(n_particle);
-  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  
-  G4double energy=1;
-  string particle_type="mu+";
-  G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
-  fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleTime(0.0*ns);
-  fParticleGun->SetParticlePosition(position);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
-  fParticleGun->SetParticleEnergy(energy*GeV);
-  
-  /*
-  G4double energy=122;
-  string particle_type="gamma";
-  G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
-  fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleTime(0.0*ns);
-  fParticleGun->SetParticlePosition(position);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
-  fParticleGun->SetParticleEnergy(energy*keV);
-  */
-  /*
-  G4double energy=2.4;
-  string particle_type="opticalphoton";
-  G4ParticleDefinition* particle = particleTable->FindParticle(particle_type);
-  fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleTime(0.0*ns);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0.0,0.0,-3*cm));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.2,0.4,-0.4));
-  fParticleGun->SetParticleEnergy(energy*eV);
-  fParticleGun->SetParticlePolarization(G4ThreeVector(1.0,1.0,0.0));
-      */   
-
-
-
-  Logger::instance()->print(("Primary particle type: "+particle_type).c_str());
-  Logger::instance()->print(("Primary particle energy: "+std::to_string(energy)+" GeV").c_str());
+  fParticleSource = new G4GeneralParticleSource();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 OpNovicePrimaryGeneratorAction::~OpNovicePrimaryGeneratorAction()
 {
-  delete fParticleGun;
+  delete fParticleSource;
   
 }
 
@@ -104,13 +63,5 @@ OpNovicePrimaryGeneratorAction::~OpNovicePrimaryGeneratorAction()
 
 void OpNovicePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-   // fParticleGun->SetParticleMomentumDirection(G4RandomDirection());
-    fParticleGun->GeneratePrimaryVertex(anEvent);
+   fParticleSource->GeneratePrimaryVertex(anEvent);
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

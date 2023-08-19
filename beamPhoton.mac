@@ -1,0 +1,10 @@
+/control/verbose 0
+/tracking/verbose 0
+/event/verbose 0
+/run/initialize
+/gps/verbose 0
+/gps/particle opticalphoton
+/gps/ene/mono 2.4 eV
+/gps/polarization 1 1 0
+/gps/direction 0.0 0.7 0.3
+/run/beamOn 1
