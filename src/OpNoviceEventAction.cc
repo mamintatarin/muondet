@@ -25,7 +25,7 @@ void OpNoviceEventAction::EndOfEventAction(const G4Event* Event)
 
 
     FillParticleDataOpt(data,width,height,
-                        tempStepping->results[0],tempStepping->results[1]);
+                        tempStepping->results[0],tempStepping->results[1],tempStepping->z);
 
     foutMuons->addData(data);
 

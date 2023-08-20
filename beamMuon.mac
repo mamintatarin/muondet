@@ -6,5 +6,5 @@
 /gps/particle mu+
 /gps/ene/mono 1 GeV
 /gps/direction 0 -1 0
-/gps/position 0 10 0 cm
-/run/beamOn 100
+/gps/position 0 10 3 cm
+/run/beamOn 1

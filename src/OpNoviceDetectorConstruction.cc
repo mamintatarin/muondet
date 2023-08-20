@@ -74,30 +74,26 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
    
         G4double RefractiveIndex_scint[] = {1.58,1.58};
         G4double Absorlen = 210*cm;
-        G4double RefractiveIndex_epoxy[] = {1.52,1.52};
-        G4double RefractiveIndex_meltmount[] = {1.7,1.7};
+      
+        G4double RefractiveIndex_meltmount[] = {1.5,1.5};
 
         G4Material* scintillator_mat = nist->FindOrBuildMaterial("G4_POLYSTYRENE");
         G4MaterialPropertiesTable* scintillator_prop_table = new G4MaterialPropertiesTable();
 
 
         G4Material* meltmount = new G4Material("meltmount", 1*g/cm3, 3);
-        G4Material* epoxy = new G4Material("epoxy", 1*g/cm3, 3);
         G4Element*  C = nist->FindOrBuildElement("C" , isotopes);
         G4Element* H = nist->FindOrBuildElement("H", isotopes);
         G4Element* O = nist->FindOrBuildElement("O", isotopes);
         meltmount->AddElement(C,1);
         meltmount->AddElement(H,1);
         meltmount->AddElement(O,1);
-        epoxy->AddElement(C,1);
-        epoxy->AddElement(H,1);
-        epoxy->AddElement(O,1);
+
 
 
         G4MaterialPropertiesTable* meltmount_prop = new G4MaterialPropertiesTable();
-        G4MaterialPropertiesTable*epoxy_prop = new G4MaterialPropertiesTable();
         meltmount_prop ->AddProperty("RINDEX",ph_Energy,RefractiveIndex_meltmount,2);
-        epoxy_prop ->AddProperty("RINDEX",ph_Energy,RefractiveIndex_epoxy,2);
+
 
         G4double distrEn[]={2.47*eV, 2.5*eV};
         G4double distrF[]={0.5,0.5};
@@ -124,7 +120,6 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
         scintillator_prop_table->AddProperty("SLOWCOMPONENT",distrEn,distrF,2);
 
         scintillator_mat->SetMaterialPropertiesTable(scintillator_prop_table);
-        epoxy->SetMaterialPropertiesTable(epoxy_prop);
         meltmount->SetMaterialPropertiesTable(meltmount_prop);
 
 
@@ -269,7 +264,6 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
         //downside detector
         G4double detector_z_size = 0.5*cm;
         G4double meltmount_z_size = 0.5*cm;
-        G4double epoxy_z_size = 0.5*cm;
         
 
         
@@ -315,24 +309,7 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
                                 0,                     //copy number
                                 checkOverlaps);        //overlaps checking
 
-        
-        G4Box* solidEpoxy =
-                new G4Box("Epoxy",                       //its name
-                        scintillator_sizeXY, scintillator_sizeXY, epoxy_z_size);     //its size
-        G4LogicalVolume* logicEpoxy1 =
-                new G4LogicalVolume(solidEpoxy,          //its solid
-                                        epoxy,           //its material
-                                        "Epoxy1");            //its name
 
-        G4VPhysicalVolume* Epoxy1 =
-                new G4PVPlacement(0,                     //no rotation
-                                G4ThreeVector(0,0,-scintillator_sizeZ-meltmount_z_size*2-epoxy_z_size),       //at (0,0,0)
-                                logicEpoxy1,            //its logical volume
-                                "Epoxy1",               //its name
-                                logicWorld,                     //its mother  volume
-                                false,                 //no boolean operation
-                                0,                     //copy number
-                                checkOverlaps);        //overlaps checking
         G4Box* solidDetector =
                 new G4Box("Detector",                       //its name
                         scintillator_sizeXY, scintillator_sizeXY, detector_z_size);     //its size
@@ -343,7 +320,7 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 
         G4VPhysicalVolume* Detector1 =
                 new G4PVPlacement(0,                     //no rotation
-                                G4ThreeVector(0,0,-scintillator_sizeZ-detector_z_size-meltmount_z_size*2-epoxy_z_size*2),       //at (0,0,0)
+                                G4ThreeVector(0,0,-scintillator_sizeZ-detector_z_size-meltmount_z_size*2),       //at (0,0,0)
                                 logicDetector1,            //its logical volume
                                 "Detector1",               //its name
                                 logicWorld,                     //its mother  volume
@@ -358,7 +335,7 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 
         G4VPhysicalVolume* Detector2 =
                 new G4PVPlacement(0,                     //no rotation
-                                G4ThreeVector(0,0,scintillator_sizeZ+detector_z_size+meltmount_z_size*2+epoxy_z_size*2),       //at (0,0,0)
+                                G4ThreeVector(0,0,scintillator_sizeZ+detector_z_size+meltmount_z_size*2),       //at (0,0,0)
                                 logicDetector2,            //its logical volume
                                 "Detector2",               //its name
                                 logicWorld,                     //its mother  volume
@@ -366,20 +343,6 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
                                 0,                     //copy number
                                 checkOverlaps);        //overlaps checking
 
-        G4LogicalVolume* logicEpoxy2 =
-                new G4LogicalVolume(solidEpoxy,          //its solid
-                                        epoxy,           //its material
-                                        "Epoxy2");            //its name
-
-        G4VPhysicalVolume* Epoxy2 =
-                new G4PVPlacement(0,                     //no rotation
-                                G4ThreeVector(0,0,scintillator_sizeZ+meltmount_z_size*2+epoxy_z_size),       //at (0,0,0)
-                                logicEpoxy2,            //its logical volume
-                                "Epoxy2",               //its name
-                                logicWorld,                     //its mother  volume
-                                false,                 //no boolean operation
-                                0,                     //copy number
-                                checkOverlaps);        //overlaps checking
         
 
    
@@ -450,10 +413,10 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
         
         G4OpticalSurface* OpSurface5 = new G4OpticalSurface("detector1");
         G4LogicalBorderSurface* Surface5 = new
-                G4LogicalBorderSurface("detector1",Epoxy1,Detector1,OpSurface5);
+                G4LogicalBorderSurface("detector1",Meltmount1,Detector1,OpSurface5);
         G4OpticalSurface* OpSurface6 = new G4OpticalSurface("detector2");
         G4LogicalBorderSurface* Surface6 = new
-                G4LogicalBorderSurface("detector2",Epoxy2,Detector2,OpSurface6);
+                G4LogicalBorderSurface("detector2",Meltmount2,Detector2,OpSurface6);
   
         G4OpticalSurfaceFinish finishDet = polished;
         G4OpticalSurfaceModel modelDet = unified;
@@ -501,31 +464,13 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
  
  
 
-        
-        G4OpticalSurface* OpSurface7 = new G4OpticalSurface("melt_epoxy1");
-        G4LogicalBorderSurface* Surface7 = new
-                G4LogicalBorderSurface("melt_epoxy1",Epoxy1,Meltmount1,OpSurface7);
-        G4OpticalSurface* OpSurface8 = new G4OpticalSurface("melt_epoxy2");
-        G4LogicalBorderSurface* Surface8 = new
-                G4LogicalBorderSurface("melt_epoxy2",Epoxy2,Meltmount2,OpSurface8);
-        OpSurface7->SetType(typeSlices);
-        OpSurface7->SetFinish(finishSlices);
-        OpSurface7->SetModel(modelSlices);
-        OpSurface8->SetType(typeSlices);
-        OpSurface8->SetFinish(finishSlices);
-        OpSurface8->SetModel(modelSlices);
         OpSurface9->SetType(typeSlices);
         OpSurface9->SetFinish(finishSlices);
         OpSurface9->SetModel(modelSlices);
         OpSurface10->SetType(typeSlices);
         OpSurface10->SetFinish(finishSlices);
         OpSurface10->SetModel(modelSlices);
-        G4MaterialPropertiesTable* OpSurfaceProperty7 = new G4MaterialPropertiesTable();
-        OpSurfaceProperty7->AddProperty("REFLECTIVITY",ph_Energy,reflectivitySlices,2);
-        G4MaterialPropertiesTable* OpSurfaceProperty8 = new G4MaterialPropertiesTable();
-        OpSurfaceProperty8->AddProperty("REFLECTIVITY",ph_Energy,reflectivitySlices,2);
-        OpSurface7->SetMaterialPropertiesTable(OpSurfaceProperty7);
-        OpSurface8->SetMaterialPropertiesTable(OpSurfaceProperty8);
+      
 
         G4MaterialPropertiesTable* OpSurfaceProperty9 = new G4MaterialPropertiesTable();
         OpSurfaceProperty9->AddProperty("REFLECTIVITY",ph_Energy,reflectivitySlices,2);

@@ -33,7 +33,7 @@
 #include "G4OpticalPhoton.hh"
 #include "DataFileManager.hh"
 #include <cstdlib>
-
+#include "G4MuonPlus.hh"
 #include <stdio.h>
 #include <Logger.hh>
 #include "G4Gamma.hh"
@@ -72,22 +72,22 @@ void OpNoviceSteppingAction::UserSteppingAction(const G4Step* step)
 
             results[1] += step->GetTotalEnergyDeposit()/keV;
 
-        //track->SetTrackStatus(fStopAndKill);
+       
     }
 
-    //if (track->GetDefinition()!= G4OpticalPhoton::Definition()
-    //                                                  &&
-     //                                                 track->GetVolume()->GetName()!="Scintillator" ){
-
-
-       // track->SetTrackStatus(fStopAndKill);
-    //}
+  
     if (track->GetDefinition()== G4OpticalPhoton::Definition() &&track->GetVolume()->GetName()=="World" ){
         track->SetTrackStatus(fStopAndKill);
     }
     if (track->GetDefinition()== G4OpticalPhoton::Definition() &&step->GetPostStepPoint()->GetStepStatus()==fGeomBoundary
                 && step->GetPostStepPoint()->GetPhysicalVolume()->GetName()=="World"){
         track->SetTrackStatus(fStopAndKill);
+    }
+
+    if (track->GetDefinition()== G4MuonPlus::Definition() && step->GetPreStepPoint()->GetPhysicalVolume()->GetName()!="Scintillator"
+        && track->GetTrackID()==1 && this->z_flag == false){
+        this->z = step->GetPreStepPoint()->GetPosition().getZ()/cm; 
+        this->z_flag = true;
     }
    
    

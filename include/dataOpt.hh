@@ -31,7 +31,7 @@ struct SensitiveDetectorParticleDataOpt{
     double height;
     double energy1;
     double energy2;
-
+    double z;
 };
 
 
@@ -39,7 +39,7 @@ struct SensitiveDetectorParticleDataOpt{
 
 
 void FillParticleDataOpt(SensitiveDetectorParticleDataOpt &data,  G4double width, G4double height,
-                         G4double energy1,G4double energy2);
+                         G4double energy1,G4double energy2,G4double z);
 
 
 
