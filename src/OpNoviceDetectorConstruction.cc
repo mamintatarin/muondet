@@ -263,7 +263,7 @@ G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 
         //downside detector
         G4double detector_z_size = 0.5*cm;
-        G4double meltmount_z_size = 0.5*cm;
+        G4double meltmount_z_size = 0.1*cm;
         
 
         
