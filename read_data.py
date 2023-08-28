@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import os
 import json
+import pandas as pd
 
 dtype = dtype = [('width',float),('height',float),('energy1',float),('energy2',float),('z',float)]
 data = []
-for i in range(69):
+for i in range(326):
     tempdata=np.fromfile(os.path.join('data', f'Muons{i}.bin'),dtype=dtype)
     with open(f'data/params_{i}.json','r') as f:
         tempdata['z'] = json.load(f)['z']
@@ -59,6 +60,10 @@ def predict_coords(energs: np.ndarray, mean_table: np.ndarray, unique_coords: np
     
     
 
+results_table = {'width':[],'height':[],'sys mean':[],'sys max':[],'stat mean':[],'stat max':[],
+                 'mean total error':[],'max total error':[],
+                 "events total":[],'events per z':[]}
+
 params_2d = np.zeros((data.shape[0],2))
 params_2d[:,0]=data['width']
 params_2d[:,1]=data['height']
@@ -72,7 +77,15 @@ for width,height in unique_width_height_array:
     for i,z in enumerate(coords_z):
         errors = tempdata[tempdata['z']==z]['z'] - predicted_coords[tempdata['z']==z]
         errors_dicts.append({'mean':errors.mean(),"std":errors.std(),"z":z})
-    print("width:",width,"height:",height,"sys mean:",np.mean([abs(x['mean']) for x in errors_dicts]),
-          'sys max:',np.max([abs(x['mean']) for x in errors_dicts]),
-          'stat mean',np.mean([x['std'] for x in errors_dicts]),'stat max:',np.max([x['std'] for x in errors_dicts]))
+    results_table["width"].append(width)
+    results_table["height"].append(height)
+    results_table["sys mean"].append(np.mean([abs(x['mean']) for x in errors_dicts]))
+    results_table["sys max"].append(np.max([abs(x['mean']) for x in errors_dicts]))
+    results_table["stat mean"].append(np.mean([x['std'] for x in errors_dicts]))
+    results_table["stat max"].append(np.max([x['std'] for x in errors_dicts]))
+    results_table['mean total error'].append(np.sqrt((results_table["stat mean"][-1])**2+(results_table["sys mean"][-1])**2))
+    results_table['max total error'].append(np.sqrt((results_table["stat max"][-1])**2+(results_table["sys max"][-1])**2))
+    results_table["events total"].append(tempdata.shape[0])
+    results_table["events per z"].append(  tempdata.shape[0]/len(np.unique(tempdata['z'])) )
     #print(width,height,mean_table_temp[coords_z==0])
+print(pd.DataFrame(results_table))
