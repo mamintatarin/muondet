@@ -1,30 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
+import os
+import json
 
-dtype = [('z',float),('width',float),('height',float),('energy1',float),('energy2',float)]
+dtype = dtype = [('width',float),('height',float),('energy1',float),('energy2',float),('z',float)]
 data = []
-for i in range(75):
-    tempdata=np.fromfile('data/SpecularSides_trasparentSIPM_precise_1Gev/Muons'+str(i)+'.bin',dtype=dtype)
+for i in range(69):
+    tempdata=np.fromfile(os.path.join('data', f'Muons{i}.bin'),dtype=dtype)
+    with open(f'data/params_{i}.json','r') as f:
+        tempdata['z'] = json.load(f)['z']
     data.append(tempdata)
     tempdata_copy = tempdata.copy()
     tempdata_copy['z']=-tempdata_copy['z']
     tempdata_copy['energy1']=tempdata['energy2']
     tempdata_copy['energy2']=tempdata['energy1']
     data.append(tempdata_copy)
+    
 data = np.concatenate(data)
 print(data)
 
 def get_data_by_params(data: np.ndarray,width:float, height:float):
     return data[(data['width']==width)&(data['height']==height)]
 
-def get_most_prob(values: np.ndarray, binsnum = 100):
-    hist,bins = np.histogram(values,bins=binsnum)
-    return bins[hist.argmax()]
-
-def get_expected_value(values: np.ndarray, binsnum = 100):
-    hist,bins = np.histogram(values,bins=binsnum)
-    return sum([bins[i]*hist[i] for i in range(hist.shape[0])])/hist.sum()
 
 
 def get_mean_table(data: np.ndarray, method: str = 'average') -> tuple[np.ndarray,np.ndarray]:
@@ -65,15 +63,16 @@ params_2d = np.zeros((data.shape[0],2))
 params_2d[:,0]=data['width']
 params_2d[:,1]=data['height']
 unique_width_height_array = np.vstack(list({tuple(row) for row in params_2d}))
-
 for width,height in unique_width_height_array:
     tempdata = get_data_by_params(data, width, height)
     mean_table_temp, coords_z = get_mean_table(tempdata,method='average')
+    #print(mean_table_temp,coords_z)
     predicted_coords, best_matches = predict_coords(tempdata, mean_table_temp, coords_z)
     errors_dicts = [] 
     for i,z in enumerate(coords_z):
         errors = tempdata[tempdata['z']==z]['z'] - predicted_coords[tempdata['z']==z]
         errors_dicts.append({'mean':errors.mean(),"std":errors.std(),"z":z})
-    #print(width,height,np.mean([abs(x['mean']) for x in errors_dicts]),np.max([abs(x['mean']) for x in errors_dicts]),
-    #      np.mean([x['std'] for x in errors_dicts]),np.max([x['std'] for x in errors_dicts]))
-    print(width,height,mean_table_temp[coords_z==0])
+    print("width:",width,"height:",height,"sys mean:",np.mean([abs(x['mean']) for x in errors_dicts]),
+          'sys max:',np.max([abs(x['mean']) for x in errors_dicts]),
+          'stat mean',np.mean([x['std'] for x in errors_dicts]),'stat max:',np.max([x['std'] for x in errors_dicts]))
+    #print(width,height,mean_table_temp[coords_z==0])

@@ -6,5 +6,6 @@
 /gps/particle opticalphoton
 /gps/ene/mono 2.4 eV
 /gps/polarization 1 1 0
-/gps/direction 0.0 0.7 0.3
+/gps/direction 0 -1 0
+/gps/position 0 25 50 mm
 /run/beamOn 1
